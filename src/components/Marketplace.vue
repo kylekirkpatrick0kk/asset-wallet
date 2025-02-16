@@ -26,7 +26,7 @@ const { data, error, isLoading } = useFetchData<Asset[]>('https://api.coincap.io
 const headers: Header[] = [
   { text: "Rank", value: "rank" },
   { text: "Symbol", value: "symbol" },
-  { text: "Name", value: "name" },
+  { text: "Name", value: "name", sortable: true },
   { text: "Price (USD)", value: "priceUsd" },
   { text: "Market Cap (USD)", value: "marketCapUsd" },
   { text: "Volume (24Hr)", value: "volumeUsd24Hr" },
@@ -35,6 +35,7 @@ const headers: Header[] = [
 
 const searchField = ref("name");
 const searchValue = ref("");
+
 </script>
 
 <template>
