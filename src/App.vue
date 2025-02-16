@@ -8,24 +8,38 @@ const showMarketplace = ref(true);
 
 <template>
   <div id="app">
-    <button @click="showMarketplace = !showMarketplace">
-      {{ showMarketplace ? 'Show My Assets' : 'Show Marketplace' }}
-    </button>
+    <div class="tabs">
+      <button :class="{ active: showMarketplace }" @click="showMarketplace = true">Marketplace</button>
+      <button :class="{ active: !showMarketplace }" @click="showMarketplace = false">My Wallet</button>
+    </div>
     <component :is="showMarketplace ? Marketplace : MyAssets" />
   </div>
 </template>
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+.tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+
+button {
+  padding: 0.5rem 1rem;
+  border: none;
+  background-color: #f0f0f0;
+  cursor: pointer;
 }
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+
+button.active {
+  background-color: #007bff;
+  color: white;
+}
+
+button:not(.active):hover {
+  background-color: #e0e0e0;
+}
+
+h1 {
+  margin-top: 0;
 }
 </style>
