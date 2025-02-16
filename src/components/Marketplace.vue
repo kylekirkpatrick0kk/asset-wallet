@@ -33,7 +33,7 @@ const headers: Header[] = [
   { text: "Change (24Hr)", value: "changePercent24Hr" },
 ];
 
-const searchField = ref("symbol");
+const searchField = ref("name");
 const searchValue = ref("");
 </script>
 
