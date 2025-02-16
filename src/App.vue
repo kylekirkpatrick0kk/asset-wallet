@@ -1,17 +1,18 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+import { ref } from 'vue';
+import Marketplace from './components/Marketplace.vue';
+import MyWallet from './components/MyWallet.vue';
+
+const showMarketplace = ref(true);
 </script>
 
 <template>
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+  <div id="app">
+    <button @click="showMarketplace = !showMarketplace">
+      {{ showMarketplace ? 'Show My Assets' : 'Show Marketplace' }}
+    </button>
+    <component :is="showMarketplace ? Marketplace : MyAssets" />
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
 <style scoped>
