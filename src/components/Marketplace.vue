@@ -1,7 +1,7 @@
 <!-- filepath: /c:/Users/kylek/development/interviews/asset-wallet/src/components/Marketplace.vue -->
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useFetchData } from '../helpers/fetchData';
+import { useFetchData } from '../composables/fetchData';
 import DataTable from 'vue3-easy-data-table';
 import type { Header } from 'vue3-easy-data-table';
 import 'vue3-easy-data-table/dist/style.css';

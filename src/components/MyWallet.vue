@@ -1,6 +1,6 @@
 <!-- filepath: /c:/Users/kylek/development/interviews/asset-wallet/src/components/MyAssets.vue -->
 <script setup lang="ts">
-import { useFetchData } from '../helpers/fetchData';
+import { useFetchData } from '../composables/fetchData';
 
 const { data, error, isLoading } = useFetchData();
 </script>
