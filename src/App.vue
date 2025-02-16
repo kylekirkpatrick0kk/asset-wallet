@@ -12,7 +12,7 @@ const showMarketplace = ref(true);
       <button :class="{ active: showMarketplace }" @click="showMarketplace = true">Marketplace</button>
       <button :class="{ active: !showMarketplace }" @click="showMarketplace = false">My Wallet</button>
     </div>
-    <component :is="showMarketplace ? Marketplace : MyAssets" />
+    <component :is="showMarketplace ? Marketplace : MyWallet" />
   </div>
 </template>
 
