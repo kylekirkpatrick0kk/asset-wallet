@@ -51,7 +51,8 @@ const handleRowClick = (item: ClickRowArgument) => {
 
 const wallet = ref<WalletItem[]>([]);
 const selectedAssetIdForWallet = ref<string | null>(null);
-const amount = ref<number>(0);
+const amount = ref<number | null>(null);
+const removeAmount = ref<number | null>(null);
 
 // Load wallet data from localStorage when component mounts
 onMounted(() => {
@@ -77,17 +78,18 @@ watch(
 );
 
 const addAsset = () => {
-  if (!selectedAssetIdForWallet.value || amount.value <= 0) return;
+  if (!selectedAssetIdForWallet.value || amount.value === null || amount.value <= 0) return;
   const existingItem = wallet.value.find(item => item.id === selectedAssetIdForWallet.value);
   if (existingItem) {
     existingItem.amount += amount.value;
   } else {
     wallet.value.push({ id: selectedAssetIdForWallet.value, amount: amount.value });
   }
-  amount.value = 0;
+  amount.value = null;
 };
 
-const removeAsset = (id: string, amountToRemove: number) => {
+const removeAsset = (id: string, amountToRemove: number | null) => {
+  if (amountToRemove === null || amountToRemove <= 0) return;
   const existingItem = wallet.value.find(item => item.id === id);
   if (existingItem) {
     existingItem.amount -= amountToRemove;
@@ -95,6 +97,7 @@ const removeAsset = (id: string, amountToRemove: number) => {
       wallet.value = wallet.value.filter(item => item.id !== id);
     }
   }
+  removeAmount.value = null;
 };
 
 const totalValue = computed(() => {
@@ -150,14 +153,15 @@ const totalValue = computed(() => {
           <select v-model="selectedAssetIdForWallet">
             <option v-for="asset in data" :key="asset.id" :value="asset.id">{{ asset.name }}</option>
           </select>
-          <input type="number" v-model.number="amount" placeholder="Amount" />
+          <input type="number" v-model.number="amount" placeholder="Amount to Add" step="0.01" />
           <button id="addButton" @click="addAsset">Add</button>
         </div>
         <ul>
           <li v-for="item in wallet" :key="item.id">
             {{ item.amount }} {{ data.find(asset => asset.id === item.id)?.symbol }} - 
             ${{ (item.amount * parseFloat(data.find(asset => asset.id === item.id)?.priceUsd || '0')).toFixed(2) }}
-            <button @click="removeAsset(item.id, 1)">Remove 1</button>
+            <input type="number" v-model.number="removeAmount" placeholder="Amount to Remove" step="0.01" />
+            <button id="removeButton" @click="removeAsset(item.id, removeAmount)">Remove</button>
           </li>
         </ul>
         <h3>Total Value: ${{ totalValue.toFixed(2) }}</h3>
@@ -232,4 +236,17 @@ const totalValue = computed(() => {
   background-color: #0056b3;
 }
 
+#removeButton {
+  margin: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#removeButton:hover {
+  background-color: #c82333;
+}
 </style>
