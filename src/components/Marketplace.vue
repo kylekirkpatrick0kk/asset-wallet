@@ -151,7 +151,7 @@ const totalValue = computed(() => {
             <option v-for="asset in data" :key="asset.id" :value="asset.id">{{ asset.name }}</option>
           </select>
           <input type="number" v-model.number="amount" placeholder="Amount" />
-          <button @click="addAsset">Add</button>
+          <button id="addButton" @click="addAsset">Add</button>
         </div>
         <ul>
           <li v-for="item in wallet" :key="item.id">
@@ -217,4 +217,19 @@ const totalValue = computed(() => {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+
+#addButton {
+  margin: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#addButton:hover {
+  background-color: #0056b3;
+}
+
 </style>
