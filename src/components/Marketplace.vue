@@ -3,8 +3,9 @@
 import { ref } from 'vue';
 import { useFetchData } from '../composables/fetchData';
 import DataTable from 'vue3-easy-data-table';
-import type { Header } from 'vue3-easy-data-table';
+import type { Header, ClickRowArgument } from 'vue3-easy-data-table';
 import 'vue3-easy-data-table/dist/style.css';
+import HistoricalAsset from './HistoricalAsset.vue';
 
 interface Asset {
   id: string;
@@ -35,7 +36,11 @@ const headers: Header[] = [
 
 const searchField = ref("name");
 const searchValue = ref("");
+const selectedAssetId = ref<string | null>(null);
 
+const handleRowClick = (item: ClickRowArgument) => {
+  selectedAssetId.value = item.id;
+};
 </script>
 
 <template>
@@ -62,7 +67,11 @@ const searchValue = ref("");
         :loading="isLoading"
         :search-field="searchField"
         :search-value="searchValue"
+        @click-row="handleRowClick"
       />
+      <div v-if="selectedAssetId">
+        <HistoricalAsset :assetId="selectedAssetId" />
+      </div>
     </div>
   </div>
 </template>
