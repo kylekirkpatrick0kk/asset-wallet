@@ -1,5 +1,16 @@
-# Vue 3 + TypeScript + Vite
+# stack
+Typescript, Vue3, Vite
+vue3-easy-data-table
+chart.js
+axios
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+# run on local:
+1. requires NPM and Node.js (version 18+ or 20+) to run the build
+	- you can check by running the command "npm --version", and subsequently "node --version"
+2. git clone https://github.com/kylekirkpatrick0kk/asset-wallet.git
+3. npm install
+4. npm run dev
+5. open the app using browser of your choice by going to: http://localhost:5173/
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+To run tests:
+1. npm run test
