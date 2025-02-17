@@ -1,18 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import Marketplace from './components/Marketplace.vue';
-import MyWallet from './components/MyWallet.vue';
-
-const showMarketplace = ref(true);
 </script>
 
 <template>
   <div id="app">
-    <div class="tabs">
-      <button :class="{ active: showMarketplace }" @click="showMarketplace = true">Marketplace</button>
-      <button :class="{ active: !showMarketplace }" @click="showMarketplace = false">My Wallet</button>
-    </div>
-    <component :is="showMarketplace ? Marketplace : MyWallet" />
+    <Marketplace />
   </div>
 </template>
 

@@ -1,9 +1,8 @@
-<!-- filepath: /c:/Users/kylek/development/interviews/asset-wallet/src/components/HistoricalAsset.vue -->
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import { useFetchData } from '../composables/fetchData';
+import { ref, watchEffect, onMounted } from 'vue';
 import { Line } from 'vue-chartjs';
 import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, PointElement, LinearScale, CategoryScale } from 'chart.js';
+import axios from 'axios';
 
 ChartJS.register(Title, Tooltip, Legend, LineElement, PointElement, LinearScale, CategoryScale);
 
@@ -14,7 +13,10 @@ interface HistoricalData {
 
 const props = defineProps<{ assetId: string }>();
 const interval = 'd1';
-const { data, error, isLoading } = useFetchData<HistoricalData[]>(`https://api.coincap.io/v2/assets/${props.assetId}/history?interval=${interval}`);
+
+const data = ref<HistoricalData[]>([]);
+const error = ref<Error | null>(null);
+const isLoading = ref(false);
 
 const chartData = ref({
   labels: [] as string[],
@@ -29,10 +31,28 @@ const chartData = ref({
   ],
 });
 
-watch(data, (newData) => {
-  if (newData) {
-    chartData.value.labels = newData.map(item => new Date(item.time).toLocaleDateString());
-    chartData.value.datasets[0].data = newData.map(item => parseFloat(item.priceUsd));
+const fetchData = async () => {
+  isLoading.value = true;
+  error.value = null;
+  
+  try {
+    const response = await axios.get(`https://api.coincap.io/v2/assets/${props.assetId}/history?interval=${interval}`);
+    data.value = response.data.data;
+    
+    // Update chart data
+    chartData.value.labels = data.value.map(item => new Date(item.time).toLocaleDateString());
+    chartData.value.datasets[0].data = data.value.map(item => parseFloat(item.priceUsd));
+  } catch (err) {
+    error.value = err instanceof Error ? err : new Error('Unknown error occurred');
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+// Use watchEffect to automatically refetch when assetId changes
+watchEffect(() => {
+  if (props.assetId) {
+    fetchData();
   }
 });
 </script>
