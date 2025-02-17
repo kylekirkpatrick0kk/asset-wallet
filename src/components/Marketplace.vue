@@ -29,8 +29,10 @@ interface WalletItem {
 
 const WALLET_STORAGE_KEY = 'crypto-wallet-data';
 
+// use the asset interface to define the data type for the useFetchData hook
 const { data, error, isLoading } = useFetchData<Asset[]>('https://api.coincap.io/v2/assets');
 
+// creates table header to map the rows when we display the table
 const headers: Header[] = [
   { text: "Rank", value: "rank" },
   { text: "Symbol", value: "symbol" },
@@ -44,17 +46,12 @@ const headers: Header[] = [
 const searchField = ref("name");
 const searchValue = ref("");
 const selectedAssetId = ref<string | null>(null);
-
-const handleRowClick = (item: ClickRowArgument) => {
-  selectedAssetId.value = item.id;
-};
-
 const wallet = ref<WalletItem[]>([]);
 const selectedAssetIdForWallet = ref<string | null>(null);
 const amount = ref<number | null>(null);
 const removeAmount = ref<number | null>(null);
 
-// Load wallet data from localStorage when component mounts
+// retreives the local storage wallet amount when the component is mounted
 onMounted(() => {
   const savedWallet = localStorage.getItem(WALLET_STORAGE_KEY);
   if (savedWallet) {
@@ -62,13 +59,12 @@ onMounted(() => {
       wallet.value = JSON.parse(savedWallet);
     } catch (e) {
       console.error('Error loading wallet data:', e);
-      // Initialize empty wallet if data is corrupted
       wallet.value = [];
     }
   }
 });
 
-// Watch for changes to wallet and save to localStorage
+// watches if the wallet changes and makes the setItem callback to update local storage
 watch(
   wallet,
   (newWallet) => {
@@ -77,6 +73,11 @@ watch(
   { deep: true } // Watch for nested changes in the wallet array
 );
 
+const handleRowClick = (item: ClickRowArgument) => {
+  selectedAssetId.value = item.id;
+};
+
+// wallet asset management functions
 const addAsset = () => {
   if (!selectedAssetIdForWallet.value || amount.value === null || amount.value <= 0) return;
   const existingItem = wallet.value.find(item => item.id === selectedAssetIdForWallet.value);
@@ -189,12 +190,12 @@ const totalValue = computed(() => {
   flex: 1;
   padding: 1rem;
   margin-left: 2em;
-  border: 2px solid #007bff; /* Add a border around the wallet section */
-  border-radius: 8px; /* Add rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
-  background-color: rgba(0, 123, 255, 0.1); /* Add a background color similar to the chart line */
-  max-height: 500px; /* Limit the height of the wallet section */
-  overflow-y: auto; /* Add scroll if content overflows */
+  border: 2px solid #007bff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 123, 255, 0.1);
+  max-height: 500px;
+  overflow-y: auto;
 }
 
 .search-bar {

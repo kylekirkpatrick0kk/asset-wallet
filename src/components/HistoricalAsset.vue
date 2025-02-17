@@ -31,15 +31,13 @@ const chartData = ref({
   ],
 });
 
-const fetchData = async () => {
+const fetchHistoricalData = async () => {
   isLoading.value = true;
   error.value = null;
   
   try {
     const response = await axios.get(`https://api.coincap.io/v2/assets/${props.assetId}/history?interval=${interval}`);
     data.value = response.data.data;
-    
-    // Update chart data
     chartData.value.labels = data.value.map(item => new Date(item.time).toLocaleDateString());
     chartData.value.datasets[0].data = data.value.map(item => parseFloat(item.priceUsd));
   } catch (err) {
@@ -49,10 +47,10 @@ const fetchData = async () => {
   }
 };
 
-// Use watchEffect to automatically refetch when assetId changes
+// watch effect hook to fetch historical data when the assetId changes
 watchEffect(() => {
   if (props.assetId) {
-    fetchData();
+    fetchHistoricalData();
   }
 });
 </script>
