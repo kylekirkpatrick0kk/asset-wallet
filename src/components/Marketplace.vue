@@ -1,4 +1,3 @@
-<!-- filepath: /c:/Users/kylek/development/interviews/asset-wallet/src/components/Marketplace.vue -->
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue';
 import { useFetchData } from '../composables/fetchData';
