@@ -184,7 +184,13 @@ const totalValue = computed(() => {
 .wallet-section {
   flex: 1;
   padding: 1rem;
-  border-left: 1px solid #ccc;
+  margin-left: 2em;
+  border: 2px solid #007bff; /* Add a border around the wallet section */
+  border-radius: 8px; /* Add rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  background-color: rgba(0, 123, 255, 0.1); /* Add a background color similar to the chart line */
+  max-height: 500px; /* Limit the height of the wallet section */
+  overflow-y: auto; /* Add scroll if content overflows */
 }
 
 .search-bar {
