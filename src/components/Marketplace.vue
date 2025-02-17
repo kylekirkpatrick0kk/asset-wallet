@@ -115,17 +115,18 @@ const totalValue = computed(() => {
         <h1>Marketplace</h1>
         <div v-if="error">Error: {{ error.message }}</div>
         <div v-else>
-          <div>
-            <span>Search field:</span>
-            <select v-model="searchField">
-              <option value="symbol">Symbol</option>
-              <option value="name">Name</option>
-            </select>
-            
-            <br/>
-
-            <span>Search value: </span>
-            <input type="text" v-model="searchValue">
+          <div class="search-bar">
+            <div class="search-field">
+              <label for="searchField">Search field:</label>
+              <select id="searchField" v-model="searchField">
+                <option value="symbol">Symbol</option>
+                <option value="name">Name</option>
+              </select>
+            </div>
+            <div class="search-value">
+              <label for="searchValue">Search value:</label>
+              <input id="searchValue" type="text" v-model="searchValue">
+            </div>
           </div>
 
           <DataTable
@@ -184,5 +185,30 @@ const totalValue = computed(() => {
   flex: 1;
   padding: 1rem;
   border-left: 1px solid #ccc;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.search-field,
+.search-value {
+  display: flex;
+  flex-direction: column;
+}
+
+.search-field label,
+.search-value label {
+  margin-bottom: 0.5rem;
+}
+
+.search-field select,
+.search-value input {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 </style>
