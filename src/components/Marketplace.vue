@@ -135,6 +135,8 @@ const totalValue = computed(() => {
             :search-field="searchField"
             :search-value="searchValue"
             @click-row="handleRowClick"
+            alternating
+            border-cell
           />
           <div v-if="selectedAssetId">
             <HistoricalAsset :assetId="selectedAssetId" />
