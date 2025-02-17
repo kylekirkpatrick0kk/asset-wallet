@@ -1,7 +1,7 @@
 # stack
-Typescript, Vue3, Vite
-vue3-easy-data-table
-chart.js
+Typescript, Vue3, Vite,
+vue3-easy-data-table,
+chart.js,
 axios
 
 # run on local:
@@ -14,3 +14,8 @@ axios
 
 To run tests:
 1. npm run test
+
+# relevant documentation
+- https://vuejs.org/guide/introduction.html
+- https://vite.dev/guide/
+- https://hc200ok.github.io/vue3-easy-data-table-doc/getting-started.html
