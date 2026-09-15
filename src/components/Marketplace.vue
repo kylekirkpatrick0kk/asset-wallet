@@ -2,9 +2,18 @@
 import { ref, computed, onMounted, watch } from 'vue';
 import { useFetchData } from '../composables/fetchData';
 import DataTable from 'vue3-easy-data-table';
-import type { Header, ClickRowArgument } from 'vue3-easy-data-table';
 import 'vue3-easy-data-table/dist/style.css';
 import HistoricalAsset from './HistoricalAsset.vue';
+
+interface Header {
+  text: string;
+  value: string;
+  sortable?: boolean;
+}
+
+interface ClickRowArgument {
+  id: string;
+}
 
 interface Asset {
   id: string;
@@ -29,7 +38,8 @@ interface WalletItem {
 const WALLET_STORAGE_KEY = 'crypto-wallet-data';
 
 // use the asset interface to define the data type for the useFetchData hook
-const { data, error, isLoading } = useFetchData<Asset[]>('https://api.coincap.io/v2/assets');
+const { data, error, isLoading } = useFetchData<Asset[]>('/assets');
+const assets = computed(() => data.value ?? []);
 
 // creates table header to map the rows when we display the table
 const headers: Header[] = [
@@ -134,7 +144,7 @@ const totalValue = computed(() => {
 
           <DataTable
             :headers="headers"
-            :items="data || []"
+            :items="assets"
             :loading="isLoading"
             :search-field="searchField"
             :search-value="searchValue"
@@ -151,15 +161,15 @@ const totalValue = computed(() => {
         <h2>My Wallet</h2>
         <div>
           <select v-model="selectedAssetIdForWallet">
-            <option v-for="asset in data" :key="asset.id" :value="asset.id">{{ asset.name }}</option>
+            <option v-for="asset in assets" :key="asset.id" :value="asset.id">{{ asset.name }}</option>
           </select>
           <input type="number" v-model.number="amount" placeholder="Amount to Add" step="0.01" />
           <button id="addButton" @click="addAsset">Add</button>
         </div>
         <ul>
           <li v-for="item in wallet" :key="item.id">
-            {{ item.amount }} {{ data.find(asset => asset.id === item.id)?.symbol }} - 
-            ${{ (item.amount * parseFloat(data.find(asset => asset.id === item.id)?.priceUsd || '0')).toFixed(2) }}
+            {{ item.amount }} {{ assets.find(asset => asset.id === item.id)?.symbol }} - 
+            ${{ (item.amount * parseFloat(assets.find(asset => asset.id === item.id)?.priceUsd || '0')).toFixed(2) }}
             <input type="number" v-model.number="removeAmount" placeholder="Amount to Remove" step="0.01" />
             <button id="removeButton" @click="removeAsset(item.id, removeAmount)">Remove</button>
           </li>

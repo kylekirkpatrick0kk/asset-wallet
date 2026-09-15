@@ -1,5 +1,5 @@
 import { ref, onMounted } from 'vue';
-import axios from 'axios';
+import { fetchCoinCapData } from './coinCapClient';
 
 export function useFetchData<T>(url: string) {
   const data = ref<T | null>(null);
@@ -8,8 +8,7 @@ export function useFetchData<T>(url: string) {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(url);
-      data.value = response.data.data;
+      data.value = await fetchCoinCapData<T>(url);
     } catch (err) {
       error.value = err as Error;
     } finally {

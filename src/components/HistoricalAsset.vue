@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref, watchEffect, onMounted } from 'vue';
+import { ref, watchEffect } from 'vue';
 import { Line } from 'vue-chartjs';
 import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, PointElement, LinearScale, CategoryScale } from 'chart.js';
-import axios from 'axios';
+import { fetchCoinCapData } from '../composables/coinCapClient';
 
 ChartJS.register(Title, Tooltip, Legend, LineElement, PointElement, LinearScale, CategoryScale);
 
@@ -36,8 +36,7 @@ const fetchHistoricalData = async () => {
   error.value = null;
   
   try {
-    const response = await axios.get(`https://api.coincap.io/v2/assets/${props.assetId}/history?interval=${interval}`);
-    data.value = response.data.data;
+    data.value = await fetchCoinCapData<HistoricalData[]>(`/assets/${props.assetId}/history`, { interval });
     chartData.value.labels = data.value.map(item => new Date(item.time).toLocaleDateString());
     chartData.value.datasets[0].data = data.value.map(item => parseFloat(item.priceUsd));
   } catch (err) {

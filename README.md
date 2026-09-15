@@ -10,8 +10,10 @@ axios
 2. git clone https://github.com/kylekirkpatrick0kk/asset-wallet.git
 3. cd asset-wallet/
 4. npm install
-5. npm run dev
-6. open the app using browser of your choice by going to: http://localhost:5173/
+5. create a `.env` file with your CoinCap API key:
+	`VITE_COINCAP_API_KEY=your_api_key`
+6. npm run dev
+7. open the app using browser of your choice by going to: http://localhost:5173/
 
 To run tests:
 1. npm run test
