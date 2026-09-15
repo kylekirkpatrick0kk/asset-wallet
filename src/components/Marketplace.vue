@@ -58,7 +58,7 @@ const selectedAssetId = ref<string | null>(null);
 const wallet = ref<WalletItem[]>([]);
 const selectedAssetIdForWallet = ref<string | null>(null);
 const amount = ref<number | null>(null);
-const removeAmount = ref<number | null>(null);
+const removeAmounts = ref<Record<string, number | null>>({});
 
 // retreives the local storage wallet amount when the component is mounted
 onMounted(() => {
@@ -107,7 +107,7 @@ const removeAsset = (id: string, amountToRemove: number | null) => {
       wallet.value = wallet.value.filter(item => item.id !== id);
     }
   }
-  removeAmount.value = null;
+  removeAmounts.value[id] = null;
 };
 
 const totalValue = computed(() => {
@@ -170,8 +170,8 @@ const totalValue = computed(() => {
           <li v-for="item in wallet" :key="item.id">
             {{ item.amount }} {{ assets.find(asset => asset.id === item.id)?.symbol }} - 
             ${{ (item.amount * parseFloat(assets.find(asset => asset.id === item.id)?.priceUsd || '0')).toFixed(2) }}
-            <input type="number" v-model.number="removeAmount" placeholder="Amount to Remove" step="0.01" />
-            <button id="removeButton" @click="removeAsset(item.id, removeAmount)">Remove</button>
+            <input type="number" v-model.number="removeAmounts[item.id]" placeholder="Amount to Remove" step="0.01" />
+            <button id="removeButton" @click="removeAsset(item.id, removeAmounts[item.id])">Remove</button>
           </li>
         </ul>
         <h3>Total Value: ${{ totalValue.toFixed(2) }}</h3>
